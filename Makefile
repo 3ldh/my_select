@@ -5,7 +5,7 @@
 ## Login   <sauvau_m@epitech.net>
 ## 
 ## Started on  Mon Nov 30 09:56:55 2015 Mathieu Sauvau
-## Last update Mon Nov 30 15:42:41 2015 Mathieu Sauvau
+## Last update Mon Nov 30 21:01:41 2015 Mathieu Sauvau
 ##
 
 CFLAGS += -W -Wall -Wextra
@@ -17,7 +17,10 @@ SRC = my_select.c \
       my_putstr.c \
       my_strlen.c \
       list_utility.c \
-      list_utility2.c
+      list_utility2.c \
+      key.c \
+      move.c \
+      select_utility.c
 
 OBJ = $(SRC:.o=.c)
 

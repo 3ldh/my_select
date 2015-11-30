@@ -5,7 +5,7 @@
 ** Login   <sauvau_m@epitech.net>
 ** 
 ** Started on  Mon Nov 30 13:59:35 2015 Mathieu Sauvau
-** Last update Mon Nov 30 18:42:45 2015 Mathieu Sauvau
+** Last update Mon Nov 30 22:40:08 2015 Mathieu Sauvau
 */
 
 #ifndef SELECT_H_
@@ -37,12 +37,36 @@ typedef struct	s_list
   t_elem	*last;
 }		t_list;
 
+typedef struct	s_utility
+{
+  int		col_max;
+  int		row_max;
+  int		col_width;
+  int		ch;
+  int		n;
+  int		x;
+  int		y;
+  int		i;
+  int		y_max;
+}		t_utility;
+
 t_list		*init_list(void);
 int		add(t_list *, char *);
+int		get_best_col_size(t_list list);
 void		show_list(t_list);
 void		add_end(t_list *list, char *data);
 void		add_start(t_list *list, char *data);
 void		clear_list(t_list *);
 char		*pop_end(t_list *list);
 char		*pop_start(t_list *list);
+t_elem		*go_down(t_list *list, t_utility *util, int col, int line);
+t_elem		*go_up(t_list *list, t_utility *util, int col, int line);
+t_elem		*get_current(t_list *list);
+void		key_down_up(t_list *list, t_elem *elem, t_utility *);
+void		key_left_right(t_list *list, t_elem *elem, t_utility *);
+void		key_select(t_list *list, t_elem *elem, t_utility *);
+void		detect_key(t_list *list, t_utility *util);
+void		real_display(t_list *list, t_elem *elem, t_utility *util);
+t_utility	get_util(t_list *list);
+
 #endif	/* !SELECT_H_ */
