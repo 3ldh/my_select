@@ -5,7 +5,7 @@
 ** Login   <sauvau_m@epitech.net>
 ** 
 ** Started on  Mon Nov 30 13:59:35 2015 Mathieu Sauvau
-** Last update Mon Nov 30 15:57:37 2015 Mathieu Sauvau
+** Last update Mon Nov 30 18:42:45 2015 Mathieu Sauvau
 */
 
 #ifndef SELECT_H_
@@ -23,6 +23,8 @@ typedef struct	s_elem
   char 		*data;
   bool		selected;
   bool		current;
+  int		pos;
+  int		line;
   struct s_elem	*next;
   struct s_elem	*prev;
   

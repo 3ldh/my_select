@@ -5,7 +5,7 @@
 ** Login   <sauvau_m@epitech.net>
 ** 
 ** Started on  Thu Nov  5 09:15:08 2015 Mathieu Sauvau
-** Last update Mon Nov 30 17:44:43 2015 Mathieu Sauvau
+** Last update Mon Nov 30 18:43:34 2015 Mathieu Sauvau
 */
 
 #include "select.h"
@@ -51,6 +51,8 @@ void		add_start(t_list *list, char *data)
   n_elem->data = data;
   n_elem->selected = FALSE;
   n_elem->current = FALSE;
+  n_elem->line = 0;
+  n_elem->pos = 0;
   n_elem->next = list->first;
   n_elem->prev = list->last;
   if (list->first)

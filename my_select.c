@@ -5,7 +5,7 @@
 ** Login   <sauvau_m@epitech.net>
 ** 
 ** Started on  Mon Nov 30 09:54:00 2015 Mathieu Sauvau
-** Last update Mon Nov 30 18:38:18 2015 Mathieu Sauvau
+** Last update Mon Nov 30 19:18:46 2015 Mathieu Sauvau
 */
 
 #include "select.h"
@@ -33,7 +33,7 @@ int		get_best_col_size(t_list list)
   return (size + 5);
 }
 
-void		display(t_list list)
+void		display(t_list *list)
 {
   t_elem	*elem;
   int		i;
@@ -44,32 +44,34 @@ void		display(t_list list)
   int		n;
   int		col_width;
 
-  col_width = get_best_col_size(list);
+  col_width = get_best_col_size(*list);
   n = 0;
   x = 0;
   y = 0;
   getmaxyx(stdscr, row, col);
   i = -1;
-  elem = list.first;
+  elem = list->first;
   clear();
   echo();
-  while (++i < list.size)
+  while (++i < list->size)
     {
       if (elem->current == TRUE)
 	attron(A_UNDERLINE);
       if (elem->selected == TRUE)
 	attron(A_REVERSE);
+      elem->pos = x;
+      elem->line = y;
       mvprintw(y, x, "%s\n", elem->data);
       attroff(A_REVERSE);
       attroff(A_UNDERLINE);
       n++;
-      if ((x = n * col_width) >= col)
+      elem = elem->next;
+      if (elem && (x = n * col_width) > col - my_strlen(elem->data))
 	{
 	  y++;
 	  x = 0;
 	  n = 0;
 	}
-      elem = elem->next;
     }
   refresh();
   noecho();
@@ -85,6 +87,38 @@ t_elem		*get_current(t_list *list)
   while (++i < list->size)
     {
       if (elem->current == TRUE)
+	return (elem);
+      elem = elem->next;
+    }
+  return (NULL);
+}
+
+t_elem		*go_down(t_list *list, int col, int line)
+{
+  t_elem	*elem;
+  int		i;
+
+  i = -1;
+  elem = list->first;
+  while (++i < list->size)
+    {
+      if (elem->pos == col && elem->line == line + 1)
+	return (elem);
+      elem = elem->next;
+    }
+  return (NULL);
+}
+
+t_elem		*go_up(t_list *list, int col, int line)
+{
+  t_elem	*elem;
+  int		i;
+
+  i = -1;
+  elem = list->first;
+  while (++i < list->size)
+    {
+      if (elem->pos == col && elem->line == line - 1)
 	return (elem);
       elem = elem->next;
     }
@@ -108,25 +142,42 @@ void		detect_key(t_list *list)
 	{
 	  elem = get_current(list);
 	  elem->current = FALSE;
-	  if (elem->next)
-	    elem->next->current = TRUE;
-	  else
-	    list->first->current = TRUE;
-	  display(*list);	  
+	  elem = go_down(list, elem->pos, elem->line);
+	  elem->current = TRUE;
+	  display(list);	  
 	}
       if (ch == KEY_UP)
 	{
 	  elem = get_current(list);
 	  elem->current = FALSE;
-	  elem->prev->current = TRUE;
-	  display(*list);
+	  elem = go_up(list, elem->pos, elem->line);
+	  elem->current = TRUE;
+	  display(list);
 	}
+      if (ch == KEY_RIGHT)
+	{
+	  elem = get_current(list);
+	  elem->current = FALSE;
+	  if (elem->next)
+	    elem->next->current = TRUE;
+	  else
+	    list->first->current = TRUE;
+	  display(list);
+	}
+      if (ch == KEY_LEFT)
+	{
+	  elem = get_current(list);
+	  elem->current = FALSE;
+	  elem->prev->current = TRUE;
+	  display(list);
+	}
+
       if (ch == ' ')
 	{
 	  elem = get_current(list);
 	  elem->selected = (elem->selected == TRUE) ?
 	    (elem->selected = FALSE) : (elem->selected = TRUE);
-	  display(*list);
+	  display(list);
 	}
       if (ch == 'q' || ch == '\n')
 	{
@@ -153,7 +204,7 @@ int		main(int ac, char **av)
   list->first->current = TRUE;
   initscr();
   keypad(stdscr, TRUE);
-  display(*list);
+  display(list);
   noecho();
   detect_key(list);
   getmaxyx(stdscr, row, col);
