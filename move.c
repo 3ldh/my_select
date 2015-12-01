@@ -5,10 +5,26 @@
 ** Login   <sauvau_m@epitech.net>
 ** 
 ** Started on  Mon Nov 30 19:31:29 2015 Mathieu Sauvau
-** Last update Mon Nov 30 22:44:38 2015 Mathieu Sauvau
+** Last update Tue Dec  1 12:39:42 2015 Mathieu Sauvau
 */
 
 #include "select.h"
+
+t_elem		*find_elem(t_list *list, int pos, int line)
+{
+  t_elem	*elem;
+  int		i;
+
+  i = -1;
+  elem = list->first;
+  while (++i < list->size)
+    {
+      if (elem->pos == pos && elem->line == line)
+	return (elem);
+      elem = elem->next;
+    }
+  return (NULL);
+}
 
 t_elem		*go_down(t_list *list, t_utility *util, int col, int line)
 {
@@ -19,7 +35,7 @@ t_elem		*go_down(t_list *list, t_utility *util, int col, int line)
   elem = list->first;
   while (++i < list->size)
     {
-      if (line + 1 <= util->y)
+      if (elem->pos == col && line + 1 <= util->y)
 	{
 	  if (elem->pos == col && elem->line == line + 1)
 	    return (elem);
@@ -31,7 +47,7 @@ t_elem		*go_down(t_list *list, t_utility *util, int col, int line)
 	}
       elem = elem->next;
     }
-  return (NULL);
+  return (find_elem(list, col, 0));
 }
 
 t_elem		*go_up(t_list *list, t_utility *util, int col, int line)
@@ -55,16 +71,14 @@ t_elem		*go_up(t_list *list, t_utility *util, int col, int line)
 	}
       elem = elem->next;
     }
-  return (NULL);
+  return (find_elem(list, col, util->y - 1));
 }
 
 void		detect_key(t_list *list, t_utility *util)
 {
-  int		i;
   t_elem	*elem;
-  
-  raw();  
-  i = -1;
+
+  raw();
   elem = list->first;
   while (42)
     {
@@ -72,7 +86,8 @@ void		detect_key(t_list *list, t_utility *util)
       key_down_up(list, elem, util);
       key_left_right(list, elem, util);
       key_select(list, elem, util);
-      if (util->ch == 'q' || util->ch == '\n')
+      key_delete(list, elem, util);
+      if (util->ch == 'q' || util->ch == '\n' || list->size == 0)
 	{
 	  endwin();
 	  break ;

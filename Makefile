@@ -5,10 +5,11 @@
 ## Login   <sauvau_m@epitech.net>
 ## 
 ## Started on  Mon Nov 30 09:56:55 2015 Mathieu Sauvau
-## Last update Mon Nov 30 21:01:41 2015 Mathieu Sauvau
+## Last update Tue Dec  1 12:32:37 2015 Mathieu Sauvau
 ##
 
 CFLAGS += -W -Wall -Wextra
+CFLAGS += -I./include/
 
 NAME = my_select
 
@@ -22,17 +23,17 @@ SRC = my_select.c \
       move.c \
       select_utility.c
 
-OBJ = $(SRC:.o=.c)
+OBJ = $(SRC:.c=.o)
 
 $(NAME) : $(OBJ)
-	gcc $(OBJ) -o $(NAME) -lncurses -I./include/
+	gcc $(OBJ) -o $(NAME) -lncurses
 
 all: $(NAME)
 
 clean:
 	rm -f $(OBJ)
 
-fclean: 
+fclean: clean 
 	rm -f $(NAME)
 
 re: fclean all

@@ -5,7 +5,7 @@
 ** Login   <sauvau_m@epitech.net>
 ** 
 ** Started on  Mon Nov 30 19:29:54 2015 Mathieu Sauvau
-** Last update Mon Nov 30 22:38:40 2015 Mathieu Sauvau
+** Last update Tue Dec  1 12:38:48 2015 Mathieu Sauvau
 */
 
 #include "select.h"
@@ -18,7 +18,7 @@ void	key_down_up(t_list *list, t_elem *elem, t_utility *util)
       elem->current = FALSE;
       elem = go_down(list, util, elem->pos, elem->line);
       elem->current = TRUE;
-      display(list, util);	  
+      display(list, util);
     }
   else if (util->ch == KEY_UP)
     {
@@ -56,8 +56,22 @@ void	key_select(t_list *list, t_elem *elem, t_utility *util)
   if (util->ch == ' ')
     {
       elem = get_current(list);
-      elem->selected = (elem->selected == TRUE) ?
-	(elem->selected = FALSE) : (elem->selected = TRUE);
+      elem->selected = ((elem->selected == TRUE) ?
+			(elem->selected = FALSE) : (elem->selected = TRUE));
+      display(list, util);
+    }
+}
+
+void	key_delete(t_list *list, t_elem *elem, t_utility *util)
+{
+  if (util->ch == KEY_BACKSPACE || util->ch == KEY_DC)
+    {
+      elem = get_current(list);
+      if (elem->next && elem->next != list->first)
+	elem->next->current = TRUE;
+      else
+	elem->prev->current = TRUE;
+      pop_middle(list, elem);
       display(list, util);
     }
 }

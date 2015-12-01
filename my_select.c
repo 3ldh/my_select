@@ -5,7 +5,7 @@
 ** Login   <sauvau_m@epitech.net>
 ** 
 ** Started on  Mon Nov 30 09:54:00 2015 Mathieu Sauvau
-** Last update Mon Nov 30 22:42:21 2015 Mathieu Sauvau
+** Last update Tue Dec  1 12:40:17 2015 Mathieu Sauvau
 */
 
 #include "select.h"
@@ -22,13 +22,29 @@ void		real_display(t_list *list, t_elem *elem, t_utility *util)
   attroff(A_REVERSE | A_UNDERLINE);
 }
 
+void		calc_display_pos(t_list *list, t_elem *elem, t_utility *util)
+{
+  if (list->size > util->row_max)
+    {
+      if (elem && (util->x = util->n * util->col_width)
+	  > util->col_max - my_strlen(elem->data))
+	{
+	  util->y++;
+	  util->x = 0;
+	  util->n = 0;
+	}
+    }
+  else
+    util->y++;
+}
+
 void		display(t_list *list, t_utility *util)
 {
   t_elem	*elem;
 
   util->n = 0;
   util->x = 0;
-  util->y = 0;  
+  util->y = 0;
   util->i = -1;
   elem = list->first;
   clear();
@@ -38,13 +54,7 @@ void		display(t_list *list, t_utility *util)
       real_display(list, elem, util);
       util->n++;
       elem = elem->next;
-      if (elem && (util->x = util->n * util->col_width)
-	  > util->col_max - my_strlen(elem->data))
-	{
-	  util->y++;
-	  util->x = 0;
-	  util->n = 0;
-	}
+      calc_display_pos(list, elem, util);
     }
   refresh();
   noecho();
@@ -53,7 +63,7 @@ void		display(t_list *list, t_utility *util)
 t_utility	get_util(t_list *list)
 {
   t_utility	util;
-    
+
   getmaxyx(stdscr, util.row_max, util.col_max);
   util.col_width = get_best_col_size(*list);
   return (util);
@@ -67,6 +77,7 @@ int		main(int ac, char **av)
 
   i = 0;
   initscr();
+  curs_set(0);
   list = init_list();
   if (ac < 2)
     return (1);
@@ -77,5 +88,8 @@ int		main(int ac, char **av)
   keypad(stdscr, TRUE);
   display(list, &util);
   detect_key(list, &util);
+  show_list(list);
+  clear_list(list);
+  free(list);
   return (0);
 }

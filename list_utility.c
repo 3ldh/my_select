@@ -5,22 +5,10 @@
 ** Login   <sauvau_m@epitech.net>
 ** 
 ** Started on  Thu Nov  5 09:15:08 2015 Mathieu Sauvau
-** Last update Mon Nov 30 18:43:34 2015 Mathieu Sauvau
+** Last update Tue Dec  1 12:35:33 2015 Mathieu Sauvau
 */
 
 #include "select.h"
-
-t_list		*init_list()
-{
-  t_list	*list;
-
-  if((list = malloc(sizeof(t_list))) == NULL)
-     return (NULL);
-  list->size = 0;
-  list->first = NULL;
-  list->last = NULL;
-  return (list);
-}
 
 void		add_end(t_list *list, char *data)
 {
@@ -79,6 +67,24 @@ char		*pop_end(t_list *list)
   else
     list->first = NULL;
   free(tmp);
+  return (data);
+  }
+
+char		*pop_middle(t_list *list, t_elem *elem)
+{
+  char		*data;
+
+  if (elem == list->first)
+    return (pop_start(list));
+  else if (elem == list->last)
+    return (pop_end(list));
+  if (!elem)
+    return (NULL);
+  list->size--;
+  data = elem->data;
+  elem->prev->next = elem->next;
+  elem->next->prev = elem->prev;
+  free(elem);
   return (data);
 }
 
