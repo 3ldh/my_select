@@ -5,7 +5,7 @@
 ** Login   <sauvau_m@epitech.net>
 ** 
 ** Started on  Mon Nov 30 19:29:54 2015 Mathieu Sauvau
-** Last update Tue Dec  1 12:38:48 2015 Mathieu Sauvau
+** Last update Tue Dec  1 17:50:11 2015 Mathieu Sauvau
 */
 
 #include "select.h"
@@ -58,6 +58,11 @@ void	key_select(t_list *list, t_elem *elem, t_utility *util)
       elem = get_current(list);
       elem->selected = ((elem->selected == TRUE) ?
 			(elem->selected = FALSE) : (elem->selected = TRUE));
+      elem->current = FALSE;
+      if (elem->next)
+	elem->next->current = TRUE;
+      else
+	list->first->current = TRUE;
       display(list, util);
     }
 }

@@ -5,29 +5,48 @@
 ** Login   <sauvau_m@epitech.net>
 ** 
 ** Started on  Fri Nov  6 09:42:23 2015 Mathieu Sauvau
-** Last update Tue Dec  1 12:39:19 2015 Mathieu Sauvau
+** Last update Tue Dec  1 17:55:17 2015 Mathieu Sauvau
 */
 
 #include "select.h"
 
-void		show_list(t_list *list)
+int		get_nb_selected(t_list *list)
 {
   t_elem	*elem;
   int		i;
+  int		n;
 
   i = -1;
   elem = list->first;
   while (++i < list->size)
     {
       if (elem->selected == TRUE)
+	n++;
+      elem = elem->next;
+    }
+  return (n);
+}
+
+void		show_list(t_list *list)
+{
+  t_elem	*elem;
+  int		i;
+  int		nb_selected;
+  
+  i = -1;
+  nb_selected = get_nb_selected(list);
+  elem = list->first;
+  while (++i < list->size)
+    {
+      if (elem->selected == TRUE)
 	{
 	  my_putstr(elem->data);
-	  if (i != list->size - 1)
+	  nb_selected--;
+	  if (nb_selected != 0)
 	    my_putchar(' ');
 	}
       elem = elem->next;
     }
-  my_putchar('\n');
 }
 
 void		clear_list(t_list *list)
