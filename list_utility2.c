@@ -1,11 +1,11 @@
 /*
 ** list_utility2.c for push_swap in /home/sauvau_m/rendu/CPE_2015_Pushswap
-** 
+**
 ** Made by Mathieu Sauvau
 ** Login   <sauvau_m@epitech.net>
-** 
+**
 ** Started on  Fri Nov  6 09:42:23 2015 Mathieu Sauvau
-** Last update Tue Dec  1 17:55:17 2015 Mathieu Sauvau
+** Last update Tue Dec  8 18:02:23 2015 Mathieu Sauvau
 */
 
 #include "select.h"
@@ -17,6 +17,7 @@ int		get_nb_selected(t_list *list)
   int		n;
 
   i = -1;
+  n = 0;
   elem = list->first;
   while (++i < list->size)
     {
@@ -32,7 +33,7 @@ void		show_list(t_list *list)
   t_elem	*elem;
   int		i;
   int		nb_selected;
-  
+
   i = -1;
   nb_selected = get_nb_selected(list);
   elem = list->first;

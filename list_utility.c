@@ -1,11 +1,11 @@
 /*
 ** push_swap_utility.c for push swap in /home/sauvau_m/rendu/CPE_2015_Pushswap
-** 
+**
 ** Made by Mathieu Sauvau
 ** Login   <sauvau_m@epitech.net>
-** 
+**
 ** Started on  Thu Nov  5 09:15:08 2015 Mathieu Sauvau
-** Last update Tue Dec  1 12:35:33 2015 Mathieu Sauvau
+** Last update Mon Dec  7 15:59:46 2015 Mathieu Sauvau
 */
 
 #include "select.h"
@@ -20,6 +20,8 @@ void		add_end(t_list *list, char *data)
   n_elem->data = data;
   n_elem->selected = FALSE;
   n_elem->current = FALSE;
+  n_elem->line = 0;
+  n_elem->col = 0;
   n_elem->prev = list->last;
   n_elem->next = list->first;
   if (list->last)
@@ -40,7 +42,7 @@ void		add_start(t_list *list, char *data)
   n_elem->selected = FALSE;
   n_elem->current = FALSE;
   n_elem->line = 0;
-  n_elem->pos = 0;
+  n_elem->col = 0;
   n_elem->next = list->first;
   n_elem->prev = list->last;
   if (list->first)

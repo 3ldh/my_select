@@ -1,60 +1,61 @@
 /*
 ** my_select.c for my_select in /home/sauvau_m/rendu/PSU_2015_my_select
-** 
+**
 ** Made by Mathieu Sauvau
 ** Login   <sauvau_m@epitech.net>
-** 
+**
 ** Started on  Mon Nov 30 09:54:00 2015 Mathieu Sauvau
-** Last update Tue Dec  1 12:40:17 2015 Mathieu Sauvau
+** Last update Wed Dec  9 15:19:38 2015 Mathieu Sauvau
 */
 
 #include "select.h"
 
-void		real_display(t_list *list, t_elem *elem, t_utility *util)
+void		real_display(t_elem *elem, t_utility *util)
 {
   if (elem->current == TRUE)
     attron(A_UNDERLINE);
   if (elem->selected == TRUE)
     attron(A_REVERSE);
-  elem->pos = util->x;
+  elem->col = util->x;
   elem->line = util->y;
   mvprintw(util->y, util->x, "%s\n", elem->data);
   attroff(A_REVERSE | A_UNDERLINE);
 }
 
-void		calc_display_pos(t_list *list, t_elem *elem, t_utility *util)
+void		calc_display_pos(t_utility *util)
 {
-  if (list->size > util->row_max)
+  getmaxyx(stdscr, util->row_max, util->col_max);
+  if (util->y >= util->row_max - 1)
     {
-      if (elem && (util->x = util->n * util->col_width)
-	  > util->col_max - my_strlen(elem->data))
-	{
-	  util->y++;
-	  util->x = 0;
-	  util->n = 0;
-	}
+      util->y = 0;
+      util->x += util->col_width + 2;
     }
   else
     util->y++;
+  if (util->x > util->col_max - util->col_width)
+    {
+      clear();
+      endwin();
+      exit(-1);
+    }
 }
 
 void		display(t_list *list, t_utility *util)
 {
   t_elem	*elem;
+  int		i;
 
-  util->n = 0;
   util->x = 0;
   util->y = 0;
-  util->i = -1;
+  i = -1;
   elem = list->first;
   clear();
   echo();
-  while (++util->i < list->size)
+  while (++i < list->size)
     {
-      real_display(list, elem, util);
-      util->n++;
+      real_display(elem, util);
       elem = elem->next;
-      calc_display_pos(list, elem, util);
+      calc_display_pos( util);
     }
   refresh();
   noecho();
@@ -69,27 +70,33 @@ t_utility	get_util(t_list *list)
   return (util);
 }
 
-int		main(int ac, char **av)
+int		main(int ac, char **av, char **ae)
 {
+  char		*term;
+  SCREEN	*screen;
   t_list	*list;
   t_utility	util;
   int		i;
 
-  i = 0;
-  initscr();
-  curs_set(0);
-  list = init_list();
   if (ac < 2)
     return (1);
+  term = get_term(ae);
+  screen = newterm(term, stderr, stdin);
+  set_term(screen);
+  i = 0;
+  curs_set(0);
+  set_escdelay(0);
+  list = init_list();
   while (++i < ac)
-    add_start(list, av[i]);
+    add_end(list, av[i]);
   list->first->current = TRUE;
   util = get_util(list);
+  util.ch = 0;
   keypad(stdscr, TRUE);
-  display(list, &util);
   detect_key(list, &util);
-  show_list(list);
-  clear_list(list);
-  free(list);
+  if (util.ch == '\n')
+    show_list(list);
+    free(term);
+   free_all(list);
   return (0);
 }

@@ -1,11 +1,11 @@
 /*
 ** select_utility.c for my_select in /home/sauvau_m/rendu/PSU_2015_my_select
-** 
+**
 ** Made by Mathieu Sauvau
 ** Login   <sauvau_m@epitech.net>
-** 
+**
 ** Started on  Mon Nov 30 21:00:08 2015 Mathieu Sauvau
-** Last update Mon Nov 30 21:01:21 2015 Mathieu Sauvau
+** Last update Wed Dec  9 15:16:55 2015 Mathieu Sauvau
 */
 
 #include "select.h"
@@ -25,7 +25,7 @@ int		get_best_col_size(t_list list)
 	size = my_strlen(elem->data);
       elem = elem->next;
     }
-  return (size + 5);
+  return (size + 2);
 }
 
 t_elem		*get_current(t_list *list)
