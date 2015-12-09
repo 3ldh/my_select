@@ -5,7 +5,7 @@
 ** Login   <sauvau_m@epitech.net>
 **
 ** Started on  Mon Dec  7 18:53:23 2015 Mathieu Sauvau
-** Last update Wed Dec  9 14:54:54 2015 Mathieu Sauvau
+** Last update Wed Dec  9 15:30:44 2015 Mathieu Sauvau
 */
 
 #include "select.h"
@@ -36,8 +36,9 @@ char		*get_term(char **ae)
   return (NULL);
 }
 
-void		free_all(t_list *list)
+void		free_all(t_list *list, char *term)
 {
   clear_list(list);
   free(list);
+  free(term);
 }

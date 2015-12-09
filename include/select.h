@@ -5,7 +5,7 @@
 ** Login   <sauvau_m@epitech.net>
 **
 ** Started on  Mon Nov 30 13:59:35 2015 Mathieu Sauvau
-** Last update Wed Dec  9 15:00:22 2015 Mathieu Sauvau
+** Last update Wed Dec  9 15:27:50 2015 Mathieu Sauvau
 */
 
 #ifndef SELECT_H_
@@ -81,6 +81,6 @@ t_utility	get_util(t_list *list);
 int		my_strncmp(const char *s1, char *s2, int n);
 void		change_term(t_utility *util, char *term);
 char		*get_term(char **ae);
-void		free_all(t_list *list);
+void		free_all(t_list *list, char *term);
 
 #endif	/* !SELECT_H_ */
