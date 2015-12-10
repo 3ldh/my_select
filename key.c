@@ -5,7 +5,7 @@
 ** Login   <sauvau_m@epitech.net>
 **
 ** Started on  Mon Nov 30 19:29:54 2015 Mathieu Sauvau
-** Last update Wed Dec  9 14:28:43 2015 Mathieu Sauvau
+** Last update Thu Dec 10 10:33:07 2015 Mathieu Sauvau
 */
 
 #include "select.h"
@@ -64,7 +64,7 @@ void	key_select(t_list *list, t_elem *elem, t_utility *util)
 
 void	key_delete(t_list *list, t_elem *elem, t_utility *util)
 {
-  if (util->ch == KEY_BACKSPACE && util->ch == KEY_DC)
+  if (util->ch == KEY_BACKSPACE || util->ch == KEY_DC)
     {
       elem = get_current(list);
       if (elem->next && elem->next != list->first)
